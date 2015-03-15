@@ -28,3 +28,8 @@
 
 # "temporary" build files
 /target
+.classpath
+.project
+.settings
+target-eclipse
+web-app
