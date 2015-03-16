@@ -128,5 +128,3 @@ log4j.main = {
 }
 
 grails.views.javascript.library="jquery"
-
-grails.resources.adhoc.patterns = ["/images/*", "*.css", "*.js"]
