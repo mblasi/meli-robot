@@ -17,14 +17,15 @@
 		<g:set var="img" value="${product?.image}" />
 		<g:set var="baseDir" value="${grailsApplication.config.folders.images}" />
 		<p>
-		  <img src='${createLinkTo(dir: "${baseDir}", file: "${img}")}'>
+		  <g:img dir="${baseDir}" file="${img}" witdh="60" height="60"/>
+		  <br>
 		  <%= "${product?.name}" %>
-          <em>(<%="${product?._id}" %>)</em> - <em><%="${product?.stock_qty}" %> left</em>
+          <em>(<%="${product?._id}" %>)</em> - <em><%="${product?.stock_qty}" %> left! </em><strong>$<%= "${product?.price}" %></strong>
 		  <br>
 		  <small><%= "${product?.description}" %></small>
-
+	      <br>
 		  <g:if test="${product.published}">
-            <br><%="Already publised!"%>
+            <%="Already publised!"%>
           </g:if>
 		  <g:else>
             <button ${!auth ? 'disabled':''}>publish!</button>

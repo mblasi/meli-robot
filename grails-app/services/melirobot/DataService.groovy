@@ -17,6 +17,7 @@ class DataService {
 				image = "shoe.jpg"
 				stock_qty = 1
 				published = false
+				price = 200
 	        }
                 unused {
         	    _id = 2 
@@ -25,6 +26,7 @@ class DataService {
 				image = "racket.jpg"
 				stock_qty = 3
 				published = true
+				price = 800
         	}
         	unused {
 	            _id = 3 
@@ -33,6 +35,7 @@ class DataService {
 				image = "pen.jpg"
 				stock_qty = 50
 				published = false
+				price = 130
 	        }
                 unused {
 	            _id = 4 
@@ -41,6 +44,7 @@ class DataService {
 				image = "xbox.jpg"
 				stock_qty = 2
 				published = true
+				price = 2000
 	        }
                 unused {
 	            _id = 5 
@@ -49,6 +53,7 @@ class DataService {
 				image = "ball.jpg"
 				stock_qty = 12
 				published = false
+				price = 50
 	        }
 	    }
 	})

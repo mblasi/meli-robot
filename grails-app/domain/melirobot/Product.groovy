@@ -17,5 +17,6 @@ class Product {
 	String image
 	String stock_qty
 	boolean published
+	float price
 
 }
