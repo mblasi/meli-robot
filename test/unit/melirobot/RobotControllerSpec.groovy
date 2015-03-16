@@ -6,7 +6,7 @@ import spock.lang.Specification
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(RobotController)
+@TestFor(ProductController)
 class RobotControllerSpec extends Specification {
 
     def setup() {
