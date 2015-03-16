@@ -11,6 +11,8 @@
       <!-- TODO: check a better location for the template -->
       <g:render template="login"/>
 
+      <g:set var="auth" value="${session.user != null}"/>
+
       <% products.each { product -> %>
 		<g:set var="img" value="${product?.image}" />
 		<g:set var="baseDir" value="${grailsApplication.config.folders.images}" />
@@ -24,9 +26,9 @@
 		  <g:if test="${product.published}">
             <br><%="Already publised!"%>
           </g:if>
-		  <g:if test="${!product.published}">
-            <button>publish!</button>
-		  </g:if>
+		  <g:else>
+            <button ${!auth ? 'disabled':''}>publish!</button>
+		  </g:else>
 		  
 
         </p>
