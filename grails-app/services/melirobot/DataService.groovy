@@ -14,7 +14,7 @@ class DataService {
 	            _id = 1
 	            name = "shoe"
 				description = "just left shoe"
-				image = ""
+				image = "shoe.jpg"
 				stock_qty = 1
 				published = false
 	        }
@@ -22,7 +22,7 @@ class DataService {
         	    _id = 2 
         	    name = "racket"
 				description = "tennis racket"
-				image = ""
+				image = "racket.jpg"
 				stock_qty = 3
 				published = true
         	}
@@ -30,7 +30,7 @@ class DataService {
 	            _id = 3 
 	            name = "pen"
 				description = "blue pen"
-				image = ""
+				image = "pen.jpg"
 				stock_qty = 50
 				published = false
 	        }
@@ -38,7 +38,7 @@ class DataService {
 	            _id = 4 
 	            name = "xbox"
 				description = "better than wii"
-				image = ""
+				image = "xbox.jpg"
 				stock_qty = 2
 				published = true
 	        }
@@ -46,7 +46,7 @@ class DataService {
 	            _id = 5 
 	            name = "ball"
 				description = "huge ball"
-				image = ""
+				image = "ball.jpg"
 				stock_qty = 12
 				published = false
 	        }

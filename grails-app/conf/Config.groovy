@@ -103,7 +103,7 @@ data {
 }
 
 folders {
-    images = '/images'
+    images = '/images/products'
 }
 
 // log4j configuration
@@ -128,3 +128,5 @@ log4j.main = {
 }
 
 grails.views.javascript.library="jquery"
+
+grails.resources.adhoc.patterns = ["/images/*", "*.css", "*.js"]
