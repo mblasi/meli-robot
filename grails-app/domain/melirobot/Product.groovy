@@ -13,4 +13,9 @@ class Product {
 
     int _id
     String name
+	String description
+	String image
+	String stock_qty
+	boolean published
+
 }
