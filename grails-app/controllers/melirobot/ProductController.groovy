@@ -1,16 +1,18 @@
 package melirobot
 
-import grails.web.JSONBuilder
 import grails.converters.JSON
+import grails.web.JSONBuilder
 
 import com.mercadolibre.sdk.Meli
 import com.ning.http.client.FluentStringsMap
-import com.ning.http.client.Response;
+import com.ning.http.client.Response
 
 class ProductController {
 
     def dataService
-
+	def imageService
+	def grailsApplication
+	
 	//TODO not a nice place to put this
 	def m = new Meli(1742609979742013, "ur4ZXJQwH3SFbvM0fQMAwL9QXNH49sSD")
 	
@@ -66,7 +68,6 @@ class ProductController {
 
 		def json = new JSONBuilder()
 
-		//TODO include the image to the created product
 		def jsonData = json.build (
 			  {
 				  title = product.name
@@ -88,9 +89,17 @@ class ProductController {
 
 		if(publication.error == null) {
 		    dataService.linkProducts(product, publication.id)
+
+			def image = grailsApplication.config.folders.images + '/' + product.image
+
+			def imageId = imageService.postImage(image, publication, m.getAccessToken())
+
+			def response2 = m.post("/items/" + publication.id + "/pictures", params, '{"id": "' + imageId + '"}')
+
+			System.out << response2.getResponseBody()
 		    redirect action: 'list'
 		} else {
-		    throw Exception(publication.error)
+		    throw new Exception(publication.error)
 		}
 	}
 }
