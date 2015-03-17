@@ -6,7 +6,7 @@ class Product {
         // JSON definition of the User object
         grails.converters.JSON.registerObjectMarshaller(Product) {
 	     // you can filter here the key-value pairs to output:
-             //TODO: research this syntax
+         //TODO: research this syntax
 	     return it.properties.findAll {k,v -> true}
         }
     }
@@ -16,7 +16,6 @@ class Product {
 	String description
 	String image
 	String stock_qty
-	boolean published
 	float price
 
 }

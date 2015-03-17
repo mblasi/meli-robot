@@ -1,13 +1,18 @@
 package melirobot
 
 import grails.web.JSONBuilder
+import grails.converters.JSON
 
 class DataService {
 
+	//TODO save in local database the relation between two products
+	static def publications = ["1": false, "2": false, "3": false, "4": false, "5": false]
+
     def findAllLocal() {
+		//TODO retrieve from local endpoint
         def json = new JSONBuilder()
 
-        return json.build (
+        return JSON.parse(json.build (
 	{
 	    array {
 	        unused {
@@ -16,7 +21,6 @@ class DataService {
 				description = "just left shoe"
 				image = "shoe.jpg"
 				stock_qty = 1
-				published = false
 				price = 200
 	        }
                 unused {
@@ -25,7 +29,6 @@ class DataService {
 				description = "tennis racket"
 				image = "racket.jpg"
 				stock_qty = 3
-				published = true
 				price = 800
         	}
         	unused {
@@ -34,7 +37,6 @@ class DataService {
 				description = "blue pen"
 				image = "pen.jpg"
 				stock_qty = 50
-				published = false
 				price = 130
 	        }
                 unused {
@@ -43,7 +45,6 @@ class DataService {
 				description = "better than wii"
 				image = "xbox.jpg"
 				stock_qty = 2
-				published = true
 				price = 2000
 	        }
                 unused {
@@ -52,10 +53,23 @@ class DataService {
 				description = "huge ball"
 				image = "ball.jpg"
 				stock_qty = 12
-				published = false
 				price = 50
 	        }
 	    }
-	})
+	}).toString())
     }
+
+	def findById(id) {
+		def ret
+		findAllLocal().each() {prod -> if(prod._id == id) ret = prod}
+		return ret
+	}
+
+	def isPublished(product) {
+		return publications["" + product._id] != false
+	}
+
+	def linkProducts(product, meliId) {
+		publications["" + product._id] = meliId
+	}
 }
