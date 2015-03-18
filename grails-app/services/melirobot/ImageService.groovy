@@ -15,17 +15,9 @@ class ImageService {
 
   def servletContext
 
-  def postImage(image, publication, token) {
+  def postImage(image, token) {
 
     def content = IOUtils.toByteArray(servletContext.getResourceAsStream(image));
-//
-//    withHttp(uri: "https://api.mercadolibre.com/items/") {
-//
-////	  def entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE)
-////	  entity.addPart("file", new ByteArrayBody(content, image))
-//
-//      return post(path : '/' + publication.id + '/pictures', query: [access_token: token], requestContentType: "multipart/form-data", body : content )
-//    }
 
 	  try {
 		  def ret = null
@@ -43,7 +35,7 @@ class ImageService {
 			  request.entity = entity
 			  // response handler for a success response code
 			  response.success = { resp, reader ->
-				  ret = reader.get("id")
+				  ret = reader.get("variations")[0].get("url")
 			  }
 		  }
 		  return ret

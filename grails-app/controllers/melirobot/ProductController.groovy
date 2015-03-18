@@ -26,20 +26,23 @@ class ProductController {
 		def products = new ArrayList()
 		data.each() {prod -> products << new Product(prod)}
 
-		//TODO: it would be better to render each product with a small template, using 'render collection'
         render (view: 'list', model: [products: products])
     }
 
 	def authenticate() {
-		//TODO should this url be the same than (2)?
+		//TODO this url has to be the same than (2)!
 		String redirectUrl = m.getAuthUrl("http://localhost:8080/melirobot/product/authorize"); //(1)
+
+		System.out << "redirectUrl: " + redirectUrl
+
 		redirect url: redirectUrl
 	}
 
 	def authorize(String code) {
-		//TODO should this url be the same than (1)?
-		m.authorize(code, "http://localhost:8080/melirobot/product/authorize"); //(2) -> also, this redirect is not being done! I have to continue programaticaly!
-		//TODO What about the redirect url configured in the ML app??? it is not being used!
+		//TODO this url has to be the same than (1)!
+		System.out << "Authenticated and authorized: " + code
+		m.authorize(code, "http://localhost:8080/melirobot/product/authorize"); //(2)
+		//TODO What about the redirect url configured in the ML app??? (just the hostname is validated)
 		register()
 		redirect action: 'list'
 	}
@@ -66,9 +69,10 @@ class ProductController {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
 
-		def json = new JSONBuilder()
+		def image = grailsApplication.config.folders.images + '/' + product.image
+		def imageUrl = imageService.postImage(image, m.getAccessToken())
 
-		def jsonData = json.build (
+		def jsonData = new JSONBuilder().build (
 			  {
 				  title = product.name
 				  description = product.description
@@ -79,24 +83,19 @@ class ProductController {
 				  buying_mode = "buy_it_now"
 				  listing_type_id = "bronze"
 				  condition = "new"
+				  seller_custom_field = product._id
+				  pictures = [{source = imageUrl}]
 			  }
-			)
+		)
 
-		//TODO access token gets invalid after this request
 		Response response = m.post("/items", params, jsonData.toString());
 
 		def publication = JSON.parse(response.getResponseBody())
 
 		if(publication.error == null) {
 		    dataService.linkProducts(product, publication.id)
-
-			def image = grailsApplication.config.folders.images + '/' + product.image
-
-			def imageId = imageService.postImage(image, publication, m.getAccessToken())
-
-			def response2 = m.post("/items/" + publication.id + "/pictures", params, '{"id": "' + imageId + '"}')
-
-			System.out << response2.getResponseBody()
+//			def response2 = m.post("/items/" + publication.id + "/pictures", params, '{"id": "' + imageId + '"}')
+//			publication = JSON.parse(response2.getResponseBody())
 		    redirect action: 'list'
 		} else {
 		    throw new Exception(publication.error)

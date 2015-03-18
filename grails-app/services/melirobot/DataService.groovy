@@ -65,8 +65,12 @@ class DataService {
 		return ret
 	}
 
+	def meliId(product) {
+        return publications["" + product._id]
+	}
+
 	def isPublished(product) {
-		return publications["" + product._id] != false
+		return meliId(product) != false
 	}
 
 	def linkProducts(product, meliId) {
