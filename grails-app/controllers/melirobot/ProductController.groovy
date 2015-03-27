@@ -21,11 +21,16 @@ class ProductController {
     }
 
     def list() {
-        def data = dataService.findAllLocal()
-
+        def data = dataService.findAllFromAxis()
+		
 		def products = new ArrayList()
-		data.each() {prod -> products << new Product(prod)}
 
+		data.each() {prod -> 
+			def prodNode = dataService.findProduct(prod.@id)
+			def attrs = prodNode.attributes()
+			products << new Product(prodNode)
+		}
+		
         render (view: 'list', model: [products: products])
     }
 
@@ -63,39 +68,33 @@ class ProductController {
 		redirect action: 'list'
 	}
 
-	def publish(int id) {
-		def product = dataService.findById(id)
-
-		FluentStringsMap params = new FluentStringsMap();
-		params.add("access_token", m.getAccessToken());
-
-		def image = grailsApplication.config.folders.images + '/' + product.image
-		def imageUrl = imageService.postImage(image, m.getAccessToken())
+	def publish() {
+		def image = params.productImage
+		FluentStringsMap paramsMap = new FluentStringsMap();
+		paramsMap.add("access_token", m.getAccessToken());
 
 		def jsonData = new JSONBuilder().build (
 			  {
-				  title = product.name
-				  description = product.description
-				  available_quantity = product.stock_qty
-				  price = product.price
+				  title = params.productName
+				  description = params.productDescription
+				  available_quantity = params.productStock
+				  price = params.productPrice
 				  category_id = "MLA86029" //Accesorios para autos - Otros TODO: allow category selection
 				  currency_id = "ARS"
 				  buying_mode = "buy_it_now"
 				  listing_type_id = "bronze"
 				  condition = "new"
-				  seller_custom_field = product._id
-				  pictures = [{source = imageUrl}]
+				  seller_custom_field = params.productId
+				  pictures = [{source = image}]
 			  }
 		)
 
-		Response response = m.post("/items", params, jsonData.toString());
+		Response response = m.post("/items", paramsMap, jsonData.toString());
 
 		def publication = JSON.parse(response.getResponseBody())
 
 		if(publication.error == null) {
-		    dataService.linkProducts(product, publication.id)
-//			def response2 = m.post("/items/" + publication.id + "/pictures", params, '{"id": "' + imageId + '"}')
-//			publication = JSON.parse(response2.getResponseBody())
+		    dataService.linkProducts(params.productId, publication.id)
 		    redirect action: 'list'
 		} else {
 		    throw new Exception(publication.error)
