@@ -25,10 +25,13 @@ class ProductController {
 		
 		def products = new ArrayList()
 
+//		def i = 0
 		data.each() {prod -> 
+//			if (i++ < 4) {
 			def prodNode = dataService.findProduct(prod.@id)
 			def attrs = prodNode.attributes()
 			products << new Product(prodNode)
+//			}
 		}
 		
         render (view: 'list', model: [products: products])

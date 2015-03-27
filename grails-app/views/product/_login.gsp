@@ -1,6 +1,6 @@
 <g:if test="${session.user}">
-  <%= "${session.user}" %> <a href="<g:createLink action='logout'/>">logout!</a>
+  <%= "${session.user}" %> <a href="<g:createLink action='logout'/>"><button class="ch-btn">Logout</button></a>
 </g:if>
 <g:else>
-   <a href="<g:createLink action='authenticate'/>">login to mercadolibre</a>
+   <a href="<g:createLink action='authenticate'/>"><button class="ch-btn">Login to MercadoLibre</button></a>
 </g:else>
